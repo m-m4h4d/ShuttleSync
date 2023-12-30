@@ -23,191 +23,92 @@ DROP TABLE IF EXISTS `ShuttleSync`.`Shuttles` ;
 CREATE TABLE IF NOT EXISTS `ShuttleSync`.`Shuttles` (
   `idShuttles` INT NOT NULL,
   `StartTime` TIME NOT NULL,
-  `Available` TINYINT NULL,
+  `Available` VARCHAR(5) BINARY NOT NULL DEFAULT 'FALSE',
   PRIMARY KEY (`idShuttles`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ShuttleSync`.`Retro`
+-- Table `ShuttleSync`.`Stops`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`Retro` ;
+DROP TABLE IF EXISTS `ShuttleSync`.`Stops` ;
 
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`Retro` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_Retro_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_Retro_Shuttles`
-    FOREIGN KEY (`idShuttles`)
+CREATE TABLE IF NOT EXISTS `ShuttleSync`.`Stops` (
+  `idStops` INT NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idStops`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ShuttleSync`.`Info`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ShuttleSync`.`Info` ;
+
+CREATE TABLE IF NOT EXISTS `ShuttleSync`.`Info` (
+  `Stops_idStops` INT NOT NULL,
+  `Shuttles_idShuttles` INT NOT NULL,
+  `StopTime` TIME NULL,
+  PRIMARY KEY (`Stops_idStops`, `Shuttles_idShuttles`),
+  INDEX `fk_Stops_has_Shuttles_Shuttles1_idx` (`Shuttles_idShuttles` ASC) VISIBLE,
+  INDEX `fk_Stops_has_Shuttles_Stops_idx` (`Stops_idStops` ASC) VISIBLE,
+  CONSTRAINT `fk_Stops_has_Shuttles_Stops`
+    FOREIGN KEY (`Stops_idStops`)
+    REFERENCES `ShuttleSync`.`Stops` (`idStops`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Stops_has_Shuttles_Shuttles1`
+    FOREIGN KEY (`Shuttles_idShuttles`)
     REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+SET SQL_MODE = '';
+DROP USER IF EXISTS driver;
+SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+CREATE USER 'driver' IDENTIFIED BY 'drive';
 
--- -----------------------------------------------------
--- Table `ShuttleSync`.`NICE`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`NICE` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`NICE` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_NICE_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_NICE_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`C1`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`C1` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`C1` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_C1_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_C1_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`Hostels`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`Hostels` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`Hostels` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_Hostels_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_Hostels_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`Library`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`Library` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`Library` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_Library_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_Library_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`C2`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`C2` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`C2` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_C2_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_C2_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`ASAB`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`ASAB` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`ASAB` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_ASAB_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_ASAB_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`SMME`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`SMME` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`SMME` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_Stop1_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_Stop1_Shuttles040`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`HBL`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`HBL` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`HBL` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_HBL_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_HBL_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShuttleSync`.`Gate2`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ShuttleSync`.`Gate2` ;
-
-CREATE TABLE IF NOT EXISTS `ShuttleSync`.`Gate2` (
-  `idShuttles` INT NOT NULL,
-  `StopTime` TIME NOT NULL,
-  INDEX `fk_Gate2_Shuttles_idx` (`idShuttles` ASC) VISIBLE,
-  PRIMARY KEY (`idShuttles`),
-  CONSTRAINT `fk_Gate2_Shuttles`
-    FOREIGN KEY (`idShuttles`)
-    REFERENCES `ShuttleSync`.`Shuttles` (`idShuttles`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+GRANT UPDATE ON TABLE `ShuttleSync`.`Shuttles` TO 'driver';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `ShuttleSync`.`Shuttles`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `ShuttleSync`;
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (01, '09:00:00', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (02, '09:01:30', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (03, '09:03:00', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (04, '09:04:30', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (05, '09:06:00', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (06, '09:07:30', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (07, '09:09:00', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (08, '09:10:30', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (09, '09:12:00', 'FALSE');
+INSERT INTO `ShuttleSync`.`Shuttles` (`idShuttles`, `StartTime`, `Available`) VALUES (10, '09:13:30', 'FALSE');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `ShuttleSync`.`Stops`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `ShuttleSync`;
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (01, 'SMME/SNS');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (02, 'Retro Cafe');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (03, 'NICE Ground');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (04, 'Concordia 2');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (05, 'Main Office');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (06, 'Girls\' Hostels');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (07, 'Concordia 1');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (08, 'ASAB/SADA');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (09, 'Gate 2');
+INSERT INTO `ShuttleSync`.`Stops` (`idStops`, `Name`) VALUES (10, 'HBL');
+
+COMMIT;
+
