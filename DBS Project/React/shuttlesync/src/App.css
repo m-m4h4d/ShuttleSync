@@ -1,38 +1,128 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Open+Sans:wght@300&family=Rubik+Scribble&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+
+body{
+  background-color: rgb(222, 229, 243);
+}
+.app-container {
+  font-family: 'Arial', sans-serif;
   text-align: center;
+  padding: 40px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.heading {
+  font-family: 'Kaushan';
+  color: #3498db;
+  font-size: 80px;
+  margin-top: 10px;
+}
+.favicon {
+  margin-right: 30px;
+  width: 80px; 
+  height: 80px; 
+  
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.welcome-message {
+  font-size: 50px;
+  margin-bottom: 20px;
+  font-family: 'Silkscreen';
+
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.shuttle-table {
+  width: 60%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+}
+
+.shuttle-table th, .shuttle-table td {
+  border: 5px solid #3498db;
+  padding: 5px;
+}
+
+.shuttle-table th {
+  background-color: #3498db;
+  color: #fff;
+  font-size: large;
+}
+
+.digital-clock {
+  font-size: 50px;
+  color: #0e0d0d;
+  margin-bottom: 20px;
+  font-family: "Silkscreen";
+}
+
+.refreshbutton{
+  margin-top: 10px;
+  background-color: #3498db;
+  font-family: 'Kaushan';
+  font-size: large;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 10px;
+  border-color: #fff;
+  box-shadow: #0b0c0c;
+
+}
+
+.dropdown {
+  margin-top: 10px;
+  font-size: large;
+  font-weight: bold;
+  padding: 2px;
+  border-radius: 10px;
+  background-color: #3498db;
+  color: #fff;
+  font-family: 'Kaushan';
+  border-color: #fff;
+  box-shadow: #0b0c0c;
+}
+.dropdown:hover {
+  border-color: #0b0c0c;
+  box-shadow: 0 0 10px #0b0c0c;
+}
+.refreshbutton:hover {
+  border-color: #0b0c0c;
+  box-shadow: 0 0 10px #0b0c0c;
+}
+
+.navbar {
+  background-color: #3498db;
+  padding: 10px;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.navbar li {
+  margin-right: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navbar a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #2075c1;
+}
+
+.heading {
+  margin-top: 10px; 
+}
+
+.me{
+  margin-bottom: 20px;
 }
