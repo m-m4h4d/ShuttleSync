@@ -126,3 +126,41 @@ body{
 .me{
   margin-bottom: 20px;
 }
+.status-message.error {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+.shuttle-table tr.unavailable td {
+  color: #7f8c8d;
+}
+
+.refreshbutton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .app-container {
+    padding: 16px;
+  }
+
+  .heading {
+    font-size: 44px;
+  }
+
+  .favicon {
+    width: 48px;
+    height: 48px;
+    margin-right: 12px;
+  }
+
+  .welcome-message,
+  .digital-clock {
+    font-size: 28px;
+  }
+
+  .shuttle-table {
+    width: 100%;
+  }
+}

@@ -1,7 +1,13 @@
-import axios from 'axios';
+const API_URL = (process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000').replace(/\/+$/, '');
 
-const api = axios.create({
-    baseURL:'http://127.0.0.1:8000',
-});
+async function get(path) {
+  const response = await fetch(`${API_URL}${path}`);
+  if (!response.ok) {
+    throw new Error(`Request to ${path} failed with status ${response.status}`);
+  }
+  return response.json();
+}
 
-export default api;             
+export const getStops = () => get('/api/stops');
+
+export const getArrivals = (stopId) => get(`/api/stops/${stopId}/arrivals`);

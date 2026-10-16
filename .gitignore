@@ -128,3 +128,15 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# MySQL Workbench backups
+*.mwb.bak
+
+# Vercel
+.vercel
