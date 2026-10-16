@@ -71,10 +71,17 @@ That plan gives 1 CPU, 1 GB RAM and 1 GB of storage, with no time limit.
 
 1. Sign up at [aiven.io](https://aiven.io). Create a **MySQL** service and choose the **Free** plan.
 2. When it is running, copy the **Host**, **Port**, **User** (`avnadmin`) and **Password** from the service's overview page. Download the **CA certificate** (`ca.pem`).
-3. Load the schema from your machine:
+3. Load the schema. The easiest way needs nothing installed: GitHub Actions does it for you.
+   1. In the repository on GitHub, go to **Settings → Secrets and variables → Actions → New repository secret**. Add `DB_HOST`, `DB_PORT`, `DB_USER` (`avnadmin`) and `DB_PASSWORD` from Aiven. Also add `DB_SSL_CA`, pasting in the whole text of `ca.pem`, including the `BEGIN`/`END CERTIFICATE` lines.
+   2. Open the **Actions** tab and choose **Load database schema → Run workflow**. Type `RESET` and run it.
+   3. When the run turns green, its log ends with `ShuttleSync.Info has 100 rows.`
+
+   Running it again wipes the database back to the seed data.
+
+   If you have the MySQL command-line client, you can load it from your machine instead:
 
    ```bash
-   mysql --ssl-ca=ca.pem -h <host> -P <port> -u avnadmin -p < schema.sql
+   mysql --ssl-ca=ca.pem --ssl-mode=VERIFY_CA -h <host> -P <port> -u avnadmin -p -e "source schema.sql"
    ```
 
    If creating the triggers fails with *"You do not have the SUPER privilege

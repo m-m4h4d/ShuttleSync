@@ -1,0 +1,87 @@
+name: Load database schema
+
+# Runs schema.sql against the hosted MySQL database (e.g. Aiven).
+# Start it from the Actions tab: "Load database schema" -> "Run workflow".
+#
+# schema.sql drops and recreates the ShuttleSync database, so any data in it
+# is replaced with the seed data. You must type RESET to confirm.
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   DB_HOST, DB_PORT, DB_USER, DB_PASSWORD
+#   DB_SSL_CA  - full text of the provider's CA certificate (ca.pem)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "This wipes and recreates the ShuttleSync database. Type RESET to continue."
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  load-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check confirmation
+        if: inputs.confirm != 'RESET'
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          echo "::error::Confirmation was '$CONFIRM'. Type RESET to load the schema."
+          exit 1
+
+      - name: Check secrets
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_SSL_CA: ${{ secrets.DB_SSL_CA }}
+        run: |
+          missing=0
+          for name in DB_HOST DB_PORT DB_USER DB_PASSWORD DB_SSL_CA; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Repository secret $name is not set."
+              missing=1
+            fi
+          done
+          exit $missing
+
+      - uses: actions/checkout@v4
+
+      - name: Install MySQL client
+        run: |
+          if ! command -v mysql >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y mysql-client
+          fi
+          mysql --version
+
+      - name: Load schema.sql
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          MYSQL_PWD: ${{ secrets.DB_PASSWORD }}
+          DB_SSL_CA: ${{ secrets.DB_SSL_CA }}
+        run: |
+          ca_file="$RUNNER_TEMP/ca.pem"
+          printf '%s\n' "$DB_SSL_CA" > "$ca_file"
+
+          mysql_args=(--host="$DB_HOST" --port="$DB_PORT" --user="$DB_USER"
+                      --ssl-ca="$ca_file" --ssl-mode=VERIFY_CA)
+
+          mysql "${mysql_args[@]}" < schema.sql
+
+          count=$(mysql "${mysql_args[@]}" --batch --skip-column-names \
+                    -e "SELECT COUNT(*) FROM ShuttleSync.Info")
+          echo "ShuttleSync.Info has $count rows."
+          if [ "$count" != "100" ]; then
+            echo "::error::Expected 100 rows in ShuttleSync.Info after loading the schema."
+            exit 1
+          fi
+
+          rm -f "$ca_file"
