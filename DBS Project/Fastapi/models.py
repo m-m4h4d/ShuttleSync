@@ -1,10 +1,30 @@
-from sqlalchemy import Boolean, Column, Integer, String
-from database import Base
+from typing import List, Optional
+
+from pydantic import BaseModel
 
 
-class Shuttles(Base):
-    __tablename__ = "Shuttles"
+class Stop(BaseModel):
+    id: int
+    name: str
+    offset: Optional[str]
 
-    shuttleid = Column(Integer, primary_key=True)
-    starttime = Column(Integer)
-    isavailable = Column(Boolean)
+
+class Shuttle(BaseModel):
+    id: int
+    start_time: str
+    available: bool
+    cycles: int
+
+
+class Arrival(BaseModel):
+    shuttle_id: int
+    start_time: str
+    available: bool
+    arrival_time: Optional[str]
+    seconds_until: Optional[int]
+
+
+class StopArrivals(BaseModel):
+    stop: Stop
+    campus_time: str
+    arrivals: List[Arrival]
